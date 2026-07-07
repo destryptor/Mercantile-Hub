@@ -1,0 +1,13 @@
+<section class="content-card">
+	<div>
+		<p class="eyebrow">Catalogue setup</p>
+		<h2>New product</h2>
+		<p class="muted-copy">Create a product entry with rich text, inventory, and featured imagery.</p>
+	</div>
+
+	<%= render "form", product: @product %>
+
+	<div class="form-actions">
+		<%= link_to "Cancel", store_products_path, class: "button secondary-button" %>
+	</div>
+</section>

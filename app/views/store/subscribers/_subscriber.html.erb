@@ -1,0 +1,6 @@
+<article class="table-row">
+    <div>
+        <%= link_to subscriber.email, store_subscriber_path(subscriber), class: "table-row-title" %>
+        <p>Subscribed to <%= link_to subscriber.product.name, store_product_path(subscriber.product), class: "text-link" %> on <%= l subscriber.created_at, format: :long %>.</p>
+    </div>
+</article>

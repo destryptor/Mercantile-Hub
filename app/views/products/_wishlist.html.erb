@@ -1,0 +1,31 @@
+<% if authenticated? %>
+    <div class="stack">
+        <div>
+            <p class="eyebrow">Wishlist</p>
+            <h3>Save this product for later</h3>
+            <p class="muted-copy">Choose an existing wishlist or let the app create a starter list for you automatically.</p>
+        </div>
+
+        <%= form_with url: product_wishlist_path(product), class: "subscription-form" do |form| %>
+            <% if Current.user.wishlists.any? %>
+                <div class="field-row">
+                    <%= form.label :wishlist_id, "Send to wishlist" %>
+                    <%= form.collection_select :wishlist_id, Current.user.wishlists, :id, :name %>
+                </div>
+            <% end %>
+
+            <div class="form-actions">
+                <%= form.submit "Add to wishlist", class: "button primary-button" %>
+            </div>
+    <% end %>
+    </div>
+<% else %>
+    <div class="stack">
+        <div>
+            <p class="eyebrow">Wishlist</p>
+            <h3>Create an account to save favorites</h3>
+            <p class="muted-copy">Keep curated collections, share lists, and revisit the products you care about.</p>
+        </div>
+        <%= link_to "Create account", sign_up_path, class: "button primary-button" %>
+    </div>
+<% end %>

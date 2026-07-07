@@ -1,0 +1,68 @@
+<% content_for :title, "Create account | Mercantile Hub" %>
+
+<section class="auth-layout">
+    <div class="auth-aside">
+        <p class="eyebrow">Join the platform</p>
+        <h2>Create a shopper profile that feels as premium as the catalogue.</h2>
+        <p>Registration now fits the same visual system as the storefront, without changing any of the existing signup flow.</p>
+        <ul>
+            <li>Save products to multiple wishlists.</li>
+            <li>Manage personal account settings and email updates.</li>
+            <li>Access a cleaner, more trustworthy shopping experience.</li>
+        </ul>
+    </div>
+
+    <div class="auth-card">
+        <div>
+            <p class="eyebrow">New account</p>
+            <h1>Sign up</h1>
+            <p class="muted-copy">Set up your account to start saving products and managing your profile.</p>
+        </div>
+
+        <%= form_with model: @user, url: sign_up_path, class: "auth-form" do |form| %>
+            <% if form.object.errors.any? %>
+                <div class="danger-zone">
+                    <h2><%= pluralize(form.object.errors.count, "error") %> prohibited this user from being saved:</h2>
+                    <ul>
+                        <% form.object.errors.full_messages.each do |message| %>
+                            <li><%= message %></li>
+                        <% end %>
+                    </ul>
+                </div>
+            <% end %>
+
+            <div class="split-fields">
+                <div class="field-row">
+                    <%= form.label :first_name %>
+                    <%= form.text_field :first_name, required: true, autofocus: true, autocomplete: "given-name" %>
+                </div>
+
+                <div class="field-row">
+                    <%= form.label :last_name %>
+                    <%= form.text_field :last_name, required: true, autocomplete: "family-name" %>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <%= form.label :email_address %>
+                <%= form.email_field :email_address, required: true, autocomplete: "email" %>
+            </div>
+
+            <div class="field-row">
+                <%= form.label :password %>
+                <%= form.password_field :password, required: true, autocomplete: "new-password" %>
+            </div>
+
+            <div class="field-row">
+                <%= form.label :password_confirmation %>
+                <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password" %>
+            </div>
+
+            <div class="form-actions">
+                <%= form.submit "Create account", class: "button primary-button" %>
+            </div>
+        <% end %>
+
+        <p class="muted-copy">Already registered? <%= link_to "Sign in", new_session_path, class: "text-link" %>.</p>
+    </div>
+</section>

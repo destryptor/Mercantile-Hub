@@ -1,0 +1,22 @@
+<%= form_with model: [ :store, user ], class: "form-grid" do |form| %>
+    <div class="split-fields">
+        <div class="field-row">
+            <%= form.label :first_name %>
+            <%= form.text_field :first_name, required: true, autofocus: true, autocomplete: "given-name" %>
+        </div>
+
+        <div class="field-row">
+            <%= form.label :last_name %>
+            <%= form.text_field :last_name, required: true, autocomplete: "family-name" %>
+        </div>
+    </div>
+
+    <div class="field-row">
+        <%= form.label :email_address %>
+        <%= form.email_field :email_address, required: true, autocomplete: "email" %>
+    </div>
+
+    <div class="form-actions">
+        <%= form.submit class: "button primary-button" %>
+    </div>
+<% end %>

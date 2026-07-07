@@ -1,0 +1,27 @@
+<section class="table-shell">
+    <div class="table-header">
+        <div>
+            <p class="eyebrow">Store management</p>
+            <h2><%= pluralize @wishlists.count, "Wishlist" %></h2>
+            <p class="muted-copy">See which collections your shoppers are building and filter by user or product.</p>
+        </div>
+    </div>
+
+    <%= form_with url: store_wishlists_path, method: :get, class: "filter-bar" do |form| %>
+        <div class="field-row">
+            <%= form.label :user_id, "Filter by user" %>
+            <%= form.collection_select :user_id, User.all, :id, :full_name, selected: params[:user_id], include_blank: "All Users" %>
+        </div>
+        <div class="field-row">
+            <%= form.label :product_id, "Filter by product" %>
+            <%= form.collection_select :product_id, Product.all, :id, :name, selected: params[:product_id], include_blank: "All Products" %>
+        </div>
+        <div class="form-actions">
+            <%= form.submit "Filter", class: "button secondary-button" %>
+        </div>
+    <% end %>
+
+    <div class="table-body">
+        <%= render @wishlists %>
+    </div>
+</section>

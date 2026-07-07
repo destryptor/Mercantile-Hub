@@ -1,0 +1,51 @@
+<div class="back-link-row">
+    <%= link_to "Back to products", store_products_path %>
+</div>
+
+<section class="product-showcase">
+    <div class="product-visual">
+        <% if @product.featured_image.attached? %>
+            <%= image_tag @product.featured_image.variant(resize_to_limit: [1100, 1100]) %>
+        <% else %>
+            <div class="placeholder-tile">Admin preview</div>
+        <% end %>
+    </div>
+
+    <section class="product-details">
+        <% cache @product do %>
+            <div>
+                <p class="eyebrow">Catalogue record</p>
+                <h1><%= @product.name %></h1>
+            </div>
+            <div class="rich-copy">
+                <%= @product.description %>
+            </div>
+        <% end %>
+
+        <div class="product-stat-grid">
+            <div class="stat-card">
+                <strong><%= @product.inventory_count %></strong>
+                <span>Units in inventory</span>
+            </div>
+            <div class="stat-card">
+                <strong><%= @product.wishlists_count %></strong>
+                <span>Wishlist saves</span>
+            </div>
+            <div class="stat-card">
+                <strong><%= @product.subscribers.count %></strong>
+                <span>Back-in-stock subscribers</span>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <%= link_to "View in storefront", @product, class: "button secondary-button" %>
+            <%= link_to "Edit", edit_store_product_path(@product), class: "button primary-button" %>
+            <%= button_to "Delete", [ :store, @product ], method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "button danger-button" %>
+        </div>
+
+        <div class="pill-row">
+            <%= link_to pluralize(@product.wishlists_count, "wishlist"), store_wishlists_path(product_id: @product), class: "pill alert" %>
+            <%= link_to pluralize(@product.subscribers.count, "subscriber"), store_subscribers_path(product_id: @product), class: "pill" %>
+        </div>
+    </section>
+</section>

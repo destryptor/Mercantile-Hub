@@ -1,0 +1,40 @@
+<% if product.inventory_count.positive? %>
+    <div class="stack">
+        <div>
+            <p class="eyebrow">Availability</p>
+            <h3>In stock now</h3>
+            <p class="muted-copy"><%= product.inventory_count %> <%= pluralize(product.inventory_count, product.name) %> available to browse and save.</p>
+        </div>
+        <span class="pill success"><%= pluralize(product.inventory_count, "item") %> available</span>
+    </div>
+<% else %>
+    <div class="stack">
+        <div>
+            <p class="eyebrow">Restock alerts</p>
+            <h3>Currently out of stock</h3>
+            <p class="muted-copy">Subscribe to be notified when <%= product.name %> is back in stock.</p>
+        </div>
+
+        <%= form_with model: [product, Subscriber.new], class: "subscription-form" do |form| %>
+            <% if form.object.errors.any? %>
+                <div class="danger-zone">
+                    <p class="error"><%= pluralize(form.object.errors.count, "error") %> prohibited this subscription from being saved:</p>
+                    <ul>
+                        <% form.object.errors.full_messages.each do |message| %>
+                            <li><%= message %></li>
+                        <% end %>
+                    </ul>
+                </div>
+            <% end %>
+
+            <div class="field-row">
+                <%= form.label :email %>
+                <%= form.email_field :email, placeholder: "you@example.com", required: true %>
+            </div>
+
+            <div class="form-actions">
+                <%= form.submit "Notify me", class: "button primary-button" %>
+            </div>
+    <% end %>
+    </div>
+<% end %>

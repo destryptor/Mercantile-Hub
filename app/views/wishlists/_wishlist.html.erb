@@ -1,0 +1,8 @@
+<article class="wishlist-card">
+    <p class="eyebrow">Collection</p>
+    <%= link_to wishlist.name, wishlist, class: "wishlist-row-title" %>
+    <p class="muted-copy"><%= pluralize(wishlist.products_count, "product") %> saved in this list.</p>
+    <div class="pill-row">
+        <span class="pill alert"><%= pluralize(wishlist.products_count, "item") %></span>
+    </div>
+</article>

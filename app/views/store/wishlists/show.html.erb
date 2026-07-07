@@ -1,0 +1,22 @@
+<section class="content-card">
+    <div>
+        <p class="eyebrow">Wishlist detail</p>
+        <h2><%= @wishlist.name %></h2>
+        <p class="muted-copy">By <%= link_to @wishlist.user.full_name, store_user_path(@wishlist.user), class: "text-link" %>.</p>
+    </div>
+
+    <div class="pill-row">
+        <span class="pill alert"><%= pluralize @wishlist.products_count, "Product" %></span>
+    </div>
+
+    <div class="table-body">
+        <% @wishlist.wishlist_products.includes(:product).each do |it| %>
+            <article class="table-row">
+                <div>
+                    <%= link_to it.product.name, store_product_path(it.product), class: "table-row-title" %>
+                    <small>Added <%= l it.created_at, format: :long %></small>
+                </div>
+            </article>
+        <% end %>
+    </div>
+</section>

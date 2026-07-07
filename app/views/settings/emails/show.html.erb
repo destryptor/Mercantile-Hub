@@ -1,0 +1,27 @@
+<section class="content-card">
+    <div>
+        <p class="eyebrow">Email</p>
+        <h2>Change your email address</h2>
+        <p class="muted-copy">Secure changes by confirming your current password before we send verification.</p>
+    </div>
+
+    <%= form_with model: Current.user, url: settings_email_path, class: "form-grid" do |form| %>
+        <% if form.object.errors.any? %>
+            <div class="danger-zone">Error: <%= form.object.errors.full_messages.first %></div>
+        <% end %>
+
+        <div class="field-row">
+            <%= form.label :unconfirmed_email, "New email address" %>
+            <%= form.email_field :unconfirmed_email, required: true %>
+        </div>
+
+        <div class="field-row">
+            <%= form.label :password_challenge %>
+            <%= form.password_field :password_challenge, required: true, autocomplete: "current-password" %>
+        </div>
+
+        <div class="form-actions">
+            <%= form.submit "Update email address", class: "button primary-button" %>
+        </div>
+    <% end %>
+</section>

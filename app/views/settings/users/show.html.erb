@@ -1,0 +1,15 @@
+<section class="content-card">
+	<div>
+		<p class="eyebrow">Account</p>
+		<h2>Manage your account access</h2>
+		<p class="muted-copy">Use the account controls below carefully. Deletion cannot be undone.</p>
+	</div>
+
+	<div class="danger-zone">
+		<h3>Delete account</h3>
+		<p class="muted-copy">This permanently removes your account and associated sessions.</p>
+		<div class="form-actions">
+			<%= button_to "Delete my account", settings_user_path, method: :delete, data: { turbo_confirm: "Are you sure? This action cannot be undone." }, class: "button danger-button" %>
+		</div>
+	</div>
+</section>

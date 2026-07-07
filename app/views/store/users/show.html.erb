@@ -1,0 +1,16 @@
+<div class="back-link-row">
+    <%= link_to "Back to all users", store_users_path %>
+</div>
+
+<section class="content-card">
+    <div>
+        <p class="eyebrow">User profile</p>
+        <h2><%= @user.full_name %></h2>
+        <p class="muted-copy"><%= @user.email_address %></p>
+    </div>
+
+    <div class="form-actions">
+        <%= link_to "Edit user", edit_store_user_path(@user), class: "button primary-button" %>
+        <%= button_to "Delete user", store_user_path(@user), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "button danger-button" %>
+    </div>
+</section>

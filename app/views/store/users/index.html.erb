@@ -1,0 +1,20 @@
+<section class="table-shell">
+    <div class="table-header">
+        <div>
+            <p class="eyebrow">Store management</p>
+            <h2><%= pluralize(@users.count, "User") %></h2>
+            <p class="muted-copy">Review and maintain shopper accounts from the same settings dashboard.</p>
+        </div>
+    </div>
+
+    <div class="table-body">
+        <% @users.each do |user| %>
+            <article class="table-row">
+                <div>
+                    <%= link_to user.full_name, store_user_path(user), class: "table-row-title" %>
+                    <p><%= user.email_address %></p>
+                </div>
+            </article>
+        <% end %>
+    </div>
+</section>

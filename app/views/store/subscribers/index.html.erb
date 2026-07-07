@@ -1,0 +1,23 @@
+<section class="table-shell">
+    <div class="table-header">
+        <div>
+            <p class="eyebrow">Store management</p>
+            <h2><%= pluralize @subscribers.count, "Subscriber" %></h2>
+            <p class="muted-copy">Track shoppers who asked to be notified when products return to stock.</p>
+        </div>
+    </div>
+
+    <%= form_with url: store_subscribers_path, method: :get, class: "filter-bar" do |form| %>
+        <div class="field-row">
+            <%= form.label :product_id, "Filter by product" %>
+            <%= form.collection_select :product_id, Product.all, :id, :name, selected: params[:product_id], include_blank: "All Products" %>
+        </div>
+        <div class="form-actions">
+            <%= form.submit "Filter", class: "button secondary-button" %>
+        </div>
+    <% end %>
+
+    <div class="table-body">
+        <%= render @subscribers %>
+    </div>
+</section>

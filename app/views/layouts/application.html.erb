@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Mercantile Hub" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Mercantile Hub">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <div class="page-shell">
+      <header class="site-header" data-controller="nav">
+        <div class="header-backdrop"></div>
+        <div class="container header-inner">
+          <div class="brand-block">
+            <%= link_to root_path, class: "brand-mark" do %>
+              <span class="brand-icon">M</span>
+              <span>
+                <strong>Mercantile Hub</strong>
+                <small>Curated everyday essentials</small>
+              </span>
+            <% end %>
+
+            <button type="button" class="mobile-nav-toggle" data-action="click->nav#toggle" data-nav-target="toggle" aria-expanded="false" aria-controls="mobile-navigation">
+              Menu
+            </button>
+
+            <nav class="primary-nav" id="mobile-navigation" data-nav-target="menu" aria-label="Primary navigation">
+              <%= link_to "Shop", root_path, class: nav_link_class(root_path) %>
+              <% if authenticated? %>
+                <%= link_to "Wishlists", wishlists_path, class: nav_link_class(wishlists_path) %>
+                <%= link_to "Settings", settings_root_path, class: nav_link_class(settings_root_path) %>
+              <% end %>
+            </nav>
+          </div>
+
+          <div class="header-actions" data-nav-target="menu">
+            <%= form_with url: products_path, method: :get, class: "search-shell", local: true, role: "search" do |form| %>
+              <span class="search-icon" aria-hidden="true">Search</span>
+              <%= form.search_field :q, value: params[:q], placeholder: "Search the collection", aria: { label: "Search the collection" } %>
+              <%= form.submit "Go", class: "button subtle-button search-submit" %>
+            <% end %>
+
+            <% if authenticated? %>
+              <div class="user-actions">
+                <%= link_to settings_root_path, class: "action-chip #{'active' if current_page?(settings_root_path)}" do %>
+                  <span>Account</span>
+                <% end %>
+                <%= button_to "Logout", session_path, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "button subtle-button header-button" %>
+              </div>
+            <% else %>
+              <div class="user-actions auth-actions">
+                <%= link_to "Login", new_session_path, class: "button subtle-button" %>
+                <%= link_to "Create account", sign_up_path, class: "button primary-button" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="container hero-strip">
+          <div>
+            <p class="eyebrow">Modern retail, thoughtfully styled</p>
+            <h2>Design-led shopping without the marketplace clutter.</h2>
+          </div>
+          <div class="hero-card-grid" aria-hidden="true">
+            <div class="hero-card highlight-card">
+              <strong>Fresh arrivals</strong>
+              <span>Weekly drops with premium presentation.</span>
+            </div>
+            <div class="hero-card">
+              <strong>Smart wishlists</strong>
+              <span>Track favorites and restocks with less friction.</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="container flash-stack">
+        <% if flash[:notice].present? %>
+          <div class="flash-banner notice"><%= flash[:notice] %></div>
+        <% end %>
+        <% if flash[:alert].present? %>
+          <div class="flash-banner alert"><%= flash[:alert] %></div>
+        <% end %>
+      </div>
+
+      <main class="container site-main">
+        <%= content_for?(:content) ? yield(:content) : yield %>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-grid">
+          <section>
+            <p class="eyebrow">Mercantile Hub</p>
+            <h2>Elevated commerce for modern catalogues.</h2>
+            <p class="footer-copy">A storefront experience designed to feel premium, fast, and easy to trust.</p>
+          </section>
+
+          <section>
+            <h3>Browse</h3>
+            <%= link_to "Products", root_path %>
+            <% if authenticated? %>
+              <%= link_to "Wishlists", wishlists_path %>
+              <%= link_to "Account settings", settings_root_path %>
+            <% else %>
+              <%= link_to "Create account", sign_up_path %>
+            <% end %>
+          </section>
+
+          <section>
+            <h3>Support</h3>
+            <a href="mailto:support@mercantilehub.example">support@mercantilehub.example</a>
+            <p>Fast responses, clear order journeys, and polished product discovery.</p>
+          </section>
+
+          <section>
+            <h3>Newsletter</h3>
+            <p>Get launch updates and product highlights.</p>
+            <div class="footer-signup">
+              <input type="email" placeholder="Email address" aria-label="Email address">
+              <button type="button" class="button primary-button">Join</button>
+            </div>
+          </section>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

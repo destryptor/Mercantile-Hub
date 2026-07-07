@@ -1,0 +1,59 @@
+<% content_for :title, "#{@product.name} | Mercantile Hub" %>
+
+<div class="back-link-row">
+    <%= link_to "Back to products", products_path %>
+</div>
+
+<section class="product-showcase">
+    <div class="product-visual">
+        <% if @product.featured_image.attached? %>
+            <%= image_tag @product.featured_image.variant(resize_to_limit: [1100, 1100]) %>
+        <% else %>
+            <div class="placeholder-tile">Signature product display</div>
+        <% end %>
+    </div>
+
+    <section class="product-details">
+        <% cache @product do %>
+            <div>
+                <p class="eyebrow">Featured product</p>
+                <h1><%= @product.name %></h1>
+            </div>
+
+            <div class="pill-row">
+                <span class="pill <%= @product.inventory_count.to_i.positive? ? 'success' : 'danger' %>">
+                    <%= @product.inventory_count.to_i.positive? ? "Ready to ship" : "Restock requested" %>
+                </span>
+                <span class="pill alert"><%= pluralize(@product.wishlists_count, "wishlist") %></span>
+            </div>
+
+            <div class="rich-copy">
+                <%= @product.description %>
+            </div>
+
+            <div class="product-stat-grid">
+                <div class="stat-card">
+                    <strong><%= @product.inventory_count %></strong>
+                    <span>Units available right now</span>
+                </div>
+                <div class="stat-card">
+                    <strong><%= @product.wishlists_count %></strong>
+                    <span>Wishlist saves from shoppers</span>
+                </div>
+                <div class="stat-card">
+                    <strong><%= l @product.updated_at.to_date, format: :long %></strong>
+                    <span>Last refreshed in your catalogue</span>
+                </div>
+            </div>
+        <% end %>
+
+        <div class="inventory-card">
+            <%= render "inventory", product: @product %>
+        </div>
+
+        <div class="wishlist-panel inventory-card">
+            <%= render "wishlist", product: @product %>
+        </div>
+    </section>
+</section>
+

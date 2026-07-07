@@ -1,0 +1,29 @@
+<section class="content-card">
+  <div>
+    <p class="eyebrow">Profile</p>
+    <h2>Update your identity details</h2>
+    <p class="muted-copy">Keep your personal details current for a better account experience.</p>
+  </div>
+
+  <%= form_with model: Current.user, url: settings_profile_path, class: "form-grid" do |form| %>
+    <% if form.object.errors.any? %>
+      <div class="danger-zone">Error: <%= form.object.errors.full_messages.first %></div>
+    <% end %>
+
+    <div class="split-fields">
+      <div class="field-row">
+        <%= form.label :first_name %>
+        <%= form.text_field :first_name, required: true, autocomplete: "given-name" %>
+      </div>
+
+      <div class="field-row">
+        <%= form.label :last_name %>
+        <%= form.text_field :last_name, required: true, autocomplete: "family-name" %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit "Update profile", class: "button primary-button" %>
+    </div>
+  <% end %>
+</section>

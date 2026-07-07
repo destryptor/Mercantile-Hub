@@ -1,0 +1,90 @@
+<% content_for :title, "Products | Mercantile Hub" %>
+
+<section class="section-heading">
+    <div>
+        <p class="eyebrow">Storefront</p>
+        <h2>Discover a cleaner way to browse your catalogue</h2>
+        <% if @query.present? %>
+            <p>Showing results for "<strong><%= @query %></strong>".</p>
+        <% else %>
+            <p>Every product now has room to breathe, clearer status cues, and faster routes into wishlists.</p>
+        <% end %>
+    </div>
+</section>
+
+<section class="catalog-shell">
+    <aside class="catalog-sidebar">
+        <div class="stack">
+            <div>
+                <p class="eyebrow">Overview</p>
+                <h3>Collection snapshot</h3>
+                <p class="muted-copy">A more editorial catalogue view built around real product data already in your app.</p>
+            </div>
+
+            <div class="catalog-metrics">
+                <div class="metric-card">
+                    <strong><%= @products.count %></strong>
+                    <span>Products live in the catalogue</span>
+                </div>
+                <div class="metric-card">
+                    <strong><%= @products.count { |product| product.inventory_count.to_i.positive? } %></strong>
+                    <span>Currently in stock</span>
+                </div>
+                <div class="metric-card">
+                    <strong><%= @products.sum(&:wishlists_count) %></strong>
+                    <span>Total wishlist saves</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <% if @products.any? %>
+        <div class="catalog-grid" id="products">
+            <% @products.each do |product| %>
+                <article class="product-card">
+                    <div class="product-card-media">
+                        <% if product.featured_image.attached? %>
+                            <%= image_tag product.featured_image.variant(resize_to_fill: [640, 640]) %>
+                        <% else %>
+                            <div class="placeholder-tile">Product spotlight</div>
+                        <% end %>
+                    </div>
+
+                    <div class="product-card-content">
+                        <div class="stack">
+                            <div>
+                                <%= link_to product.name, product_path(product.id), class: "product-card-title" %>
+                                <p class="product-card-copy"><%= truncate(product.description.to_plain_text, length: 110, separator: " ") %></p>
+                            </div>
+
+                            <div class="pill-row">
+                                <span class="pill <%= product.inventory_count.to_i.positive? ? 'success' : 'danger' %>">
+                                    <%= product.inventory_count.to_i.positive? ? pluralize(product.inventory_count, "unit") + " in stock" : "Out of stock" %>
+                                </span>
+                                <span class="pill alert"><%= pluralize(product.wishlists_count, "wishlist") %></span>
+                            </div>
+                        </div>
+
+                        <div class="product-actions-inline">
+                            <%= link_to "View details", product_path(product), class: "button primary-button" %>
+                            <% if authenticated? %>
+                                <%= button_to "Quick save", product_wishlist_path(product), class: "button secondary-button" %>
+                            <% else %>
+                                <%= link_to "Save later", sign_up_path, class: "button secondary-button" %>
+                            <% end %>
+                        </div>
+                    </div>
+                </article>
+            <% end %>
+        </div>
+    <% else %>
+        <section class="empty-state">
+            <p class="eyebrow">No matches</p>
+            <h2>No products found for "<%= @query %>".</h2>
+            <p class="muted-copy">Try a simpler keyword, or browse the full collection again.</p>
+            <div class="form-actions">
+                <%= link_to "Clear search", products_path, class: "button primary-button" %>
+            </div>
+        </section>
+    <% end %>
+</section>

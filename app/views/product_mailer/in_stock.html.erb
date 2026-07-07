@@ -1,0 +1,7 @@
+<h1>Good news!</h1>
+
+<p>
+  <%= @greeting %>, the product <%= link_to @product.name, product_url(@product) %> is back in stock!
+</p>
+
+<%= link_to "Unsubscribe from these notifications", unsubscribe_url(token: @subscriber.generate_token_for(:unsubscribe)) %>

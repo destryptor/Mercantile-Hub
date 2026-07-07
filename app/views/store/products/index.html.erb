@@ -1,0 +1,25 @@
+<section class="table-shell">
+    <div class="table-header">
+        <div>
+            <p class="eyebrow">Store management</p>
+            <h2>Products</h2>
+            <p class="muted-copy">Manage catalogue items, imagery, inventory, and shopper interest from one dashboard.</p>
+        </div>
+        <%= link_to "Add new product", new_store_product_path, class: "button primary-button" %>
+    </div>
+
+    <div class="table-body" id="products">
+        <% @products.each do |product| %>
+            <article class="table-row">
+                <div>
+                    <%= link_to product.name, store_product_path(product), class: "table-row-title" %>
+                    <p><%= truncate(product.description.to_plain_text, length: 120, separator: " ") %></p>
+                </div>
+                <div class="pill-row">
+                    <span class="pill <%= product.inventory_count.to_i.positive? ? 'success' : 'danger' %>"><%= pluralize(product.inventory_count, "unit") %></span>
+                    <span class="pill alert"><%= pluralize(product.wishlists_count, "wishlist") %></span>
+                </div>
+            </article>
+        <% end %>
+    </div>
+</section>

@@ -1,0 +1,13 @@
+<section class="content-card">
+	<div>
+		<p class="eyebrow">Catalogue maintenance</p>
+		<h2>Edit <%= @product.name %></h2>
+		<p class="muted-copy">Update inventory, content, and imagery without leaving the admin workspace.</p>
+	</div>
+
+	<%= render "form", product: @product %>
+
+	<div class="form-actions">
+		<%= link_to "Cancel", store_product_path(@product), class: "button secondary-button" %>
+	</div>
+</section>

@@ -1,0 +1,69 @@
+require "sidekiq/web"
+
+Rails.application.routes.draw do
+  constraints SidekiqWebConstraint.new do
+    mount Sidekiq::Web => "/sidekiq"
+  end
+
+  resource :session
+  resources :passwords, param: :token
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+
+  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  get "up" => "rails/health#show", as: :rails_health_check
+  # get "/products", to: "products#index"
+
+  # get "/products/new", to: "products#new"
+  # post "/products", to: "products#create"
+
+  # get "/products/:id", to: "products#show"
+
+  # get "/products/:id/edit", to: "products#edit"
+  # patch "/products/:id", to: "products#update"
+  # put "/products/:id", to: "products#update"
+
+  # delete "/products/:id", to: "products#destroy"
+
+  root "products#index"
+  resources :products do
+    resource :wishlist, only: [ :create ], module: :products
+    resources :subscribers, only: [ :create ]
+  end
+  resource :unsubscribe, only: [ :show ]
+  resource :session
+  resources :passwords, param: :token
+  resource :sign_up
+
+  resources :wishlists do
+    resources :wishlist_products, only: [ :update, :destroy ], module: :wishlists
+  end
+
+  namespace :settings do
+    resource :email, only: [ :show, :update ]
+    resource :password, only: [ :show, :update ]
+    resource :profile, only: [ :show, :update ]
+    resource :user, only: [ :show, :destroy ]
+
+    root to: redirect("/settings/profile")
+  end
+
+  namespace :email do
+    resources :confirmations, param: :token, only: [ :show ]
+  end
+
+  namespace :store do
+    resources :products
+    resources :users
+    resources :wishlists
+    resources :subscribers
+
+    root to: redirect("/store/products")
+  end
+  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
+  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+
+  # Defines the root path route ("/")
+  # root "posts#index"
+end

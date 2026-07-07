@@ -1,0 +1,59 @@
+<% content_for :title, "#{@wishlist.name} | Mercantile Hub" %>
+
+<section class="section-heading">
+    <div>
+        <p class="eyebrow">Wishlist detail</p>
+        <h1><%= @wishlist.name %></h1>
+        <p><%= pluralize(@wishlist.products_count, "product") %> collected in this list.</p>
+    </div>
+
+    <div class="wishlist-actions">
+        <%= tag.button "Copy share link", class: "button secondary-button", data: { controller: :clipboard, action: "clipboard#copy", clipboard_text_value: wishlist_url(@wishlist) } %>
+        <% if authenticated? && @wishlist.user == Current.user %>
+            <%= link_to "Edit", edit_wishlist_path(@wishlist), class: "button secondary-button" %>
+            <%= button_to "Delete", @wishlist, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "button danger-button" %>
+        <% end %>
+    </div>
+</section>
+
+<% if @wishlist.wishlist_products.any? %>
+    <section class="table-shell">
+        <div class="wishlist-list">
+            <% @wishlist.wishlist_products.includes(:product).each do |it| %>
+                <article class="wishlist-row">
+                    <div>
+                        <%= link_to it.product.name, it.product, class: "wishlist-row-title" %>
+                        <small>Added <%= l it.created_at, format: :long %></small>
+                    </div>
+
+                    <% if authenticated? && @wishlist.user == Current.user %>
+                        <div class="wishlist-actions">
+                            <% if (other_wishlists = Current.user.wishlists.excluding(@wishlist)) && other_wishlists.any? %>
+                                <%= form_with url: [ @wishlist, it ], method: :patch, class: "split-fields" do |form| %>
+                                    <div class="field-row">
+                                        <%= form.label :new_wishlist_id, "Move to" %>
+                                        <%= form.collection_select :new_wishlist_id, other_wishlists, :id, :name %>
+                                    </div>
+                                    <div class="form-actions">
+                                        <%= form.submit "Move", class: "button secondary-button" %>
+                                    </div>
+                                <% end %>
+                            <% end %>
+
+                            <%= button_to "Remove", [ @wishlist, it ], method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "button danger-button" %>
+                        </div>
+                    <% end %>
+                </article>
+            <% end %>
+        </div>
+    </section>
+<% else %>
+    <section class="empty-state">
+        <p class="eyebrow">No products yet</p>
+        <h2>This wishlist is waiting for its first save.</h2>
+        <p class="muted-copy">Browse the catalogue and start adding products into this collection.</p>
+        <div class="form-actions">
+            <%= link_to "Browse products", products_path, class: "button primary-button" %>
+        </div>
+    </section>
+<% end %>

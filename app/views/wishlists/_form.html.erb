@@ -1,0 +1,22 @@
+<%= form_with model: wishlist, class: "form-grid" do |form| %>
+    <% if form.object.errors.any? %>
+        <div class="danger-zone">
+            <h2><%= pluralize(form.object.errors.count, "error") %> prohibited this wishlist from being saved:</h2>
+            <ul>
+                <% form.object.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <div class="field-row">
+        <%= form.label :name %>
+        <%= form.text_field :name, placeholder: "Weekend finds" %>
+    </div>
+
+    <div class="form-actions">
+        <%= form.submit class: "button primary-button" %>
+        <%= link_to "Cancel", form.object.persisted? ? form.object : wishlists_path, class: "button secondary-button" %>
+    </div>
+<% end %>

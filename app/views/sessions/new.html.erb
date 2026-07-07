@@ -1,0 +1,41 @@
+<% content_for :title, "Sign in | Mercantile Hub" %>
+
+<section class="auth-layout">
+  <div class="auth-aside">
+    <p class="eyebrow">Welcome back</p>
+    <h2>Pick up exactly where your shoppers left off.</h2>
+    <p>Access wishlists, manage your account, and continue shaping a polished storefront experience.</p>
+    <ul>
+      <li>Fast account access without leaving the shopping flow.</li>
+      <li>Clear recovery path if a password has been forgotten.</li>
+      <li>Consistent styling with the rest of the storefront.</li>
+    </ul>
+  </div>
+
+  <div class="auth-card">
+    <div>
+      <p class="eyebrow">Account access</p>
+      <h1>Sign in</h1>
+      <p class="muted-copy">Return to your saved wishlists and product settings.</p>
+    </div>
+
+    <%= form_with url: session_path, class: "auth-form" do |form| %>
+      <div class="field-row">
+        <%= form.label :email_address, "Email address" %>
+        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %>
+      </div>
+
+      <div class="field-row">
+        <%= form.label :password %>
+        <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %>
+      </div>
+
+      <div class="form-actions">
+        <%= form.submit "Sign in", class: "button primary-button" %>
+        <%= link_to "Forgot password?", new_password_path, class: "text-link" %>
+      </div>
+    <% end %>
+
+    <p class="muted-copy">New here? <%= link_to "Create your account", sign_up_path, class: "text-link" %>.</p>
+  </div>
+</section>

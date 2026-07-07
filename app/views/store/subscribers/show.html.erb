@@ -1,0 +1,11 @@
+<section class="content-card">
+	<div>
+		<p class="eyebrow">Subscriber detail</p>
+		<h2><%= @subscriber.email %></h2>
+		<p class="muted-copy">Subscribed to <%= link_to @subscriber.product.name, store_product_path(@subscriber.product), class: "text-link" %> on <%= l @subscriber.created_at, format: :long %>.</p>
+	</div>
+
+	<div class="form-actions">
+		<%= button_to "Remove", store_subscriber_path(@subscriber), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "button danger-button" %>
+	</div>
+</section>

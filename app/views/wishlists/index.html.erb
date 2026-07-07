@@ -1,0 +1,25 @@
+<% content_for :title, "Wishlists | Mercantile Hub" %>
+
+<section class="section-heading">
+	<div>
+		<p class="eyebrow">Wishlists</p>
+		<h2>Your saved collections</h2>
+		<p>Group products into named collections and come back to them whenever you want.</p>
+	</div>
+	<%= link_to "Create a wishlist", new_wishlist_path, class: "button primary-button" %>
+</section>
+
+<% if @wishlists.any? %>
+	<section class="wishlist-grid">
+		<%= render @wishlists %>
+	</section>
+<% else %>
+	<section class="empty-state">
+		<p class="eyebrow">Nothing saved yet</p>
+		<h2>Create your first wishlist</h2>
+		<p class="muted-copy">Start collecting products into shareable lists for yourself or for later inspiration.</p>
+		<div class="form-actions">
+			<%= link_to "Create a wishlist", new_wishlist_path, class: "button primary-button" %>
+		</div>
+	</section>
+<% end %>
